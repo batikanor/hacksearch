@@ -78,4 +78,8 @@ Both are pre-configured to communicate, with sample code demonstrating connectio
 - **Frontend Deployment**: The Next.js frontend can be hosted on GitHub Pages.
 - **Backend Deployment**: Flask backend requires hosting elsewhere (e.g., Heroku, AWS, DigitalOcean).
 
+- To add a new package to frontend: `docker-compose exec frontend sh` , then    `npm install react-globe.gl`
+- 
 ---
+
+
