@@ -102,6 +102,25 @@ export default function Home() {
       );
       const locationData = await nominatimResponse.json();
       
+      // Check if location is in Zurich
+      const isZurich = locationData.address?.city?.toLowerCase() === 'zürich' || 
+                       locationData.address?.city?.toLowerCase() === 'zurich';
+
+      if (isZurich) {
+        // Hardcoded SwissHacks data for Zurich
+        setHoveredNumbers({
+          coordinates: `${latStr}°, ${lngStr}°`,
+          location: locationData.display_name,
+          hackathons: [{
+            name: "SwissHacks 2025",
+            date: "April 11-13, 2025",
+            location: "Zurich, Switzerland",
+            description: "SwissHacks 2025 marks the next milestone in Switzerland's premier government-backed hackathon. A 48-hour immersive experience where diverse talent join forces with industry-leading companies to tackle pressing challenges in the financial sector. Join us for innovation, networking, and the chance to win exciting prizes!"
+          }]
+        });
+        return;
+      }
+
       let hackathons = labelCache[key];
       if (!hackathons) {
         const response = await fetch('/api/location', {
