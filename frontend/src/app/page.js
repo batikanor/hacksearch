@@ -1,6 +1,7 @@
 "use client"
 import { useEffect, useState } from 'react';
 import dynamic from 'next/dynamic';
+import useWindowDimensions from './hooks/useWindowDimensions';
 
 // Dynamically import the Globe component to disable SSR
 const Globe = dynamic(() => import("react-globe.gl"), { ssr: false });
@@ -12,10 +13,11 @@ export default function Home() {
   const [hoveredMarkerKey, setHoveredMarkerKey] = useState('');
   const [hoveredNumbers, setHoveredNumbers] = useState(null);
   const labelCache = {};
+  const dimensions = useWindowDimensions();
 
   useEffect(() => {
     // Initial fullscreen setup
-    // const element = document.getElementById('globe-container');
+    const element = document.getElementById('globe-container');
     // if (element) {
     //   element.requestFullscreen().catch(err => {
     //     console.error(`Error attempting to enable fullscreen: ${err.message}`);
@@ -160,8 +162,8 @@ export default function Home() {
           Press 'S' to toggle fullscreen
         </div>
         <Globe
-          width={isFullscreen ? window.innerWidth : 800}
-          height={isFullscreen ? window.innerHeight : 800}
+          width={isFullscreen ? dimensions.width : 800}
+          height={isFullscreen ? dimensions.height : 800}
           backgroundColor="rgba(0,0,0,0)"
           globeImageUrl="//unpkg.com/three-globe/example/img/earth-dark.jpg"
           globeTileEngineUrl={(x, y, z) =>
