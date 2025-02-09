@@ -9,7 +9,7 @@ export async function POST(request) {
     
     // Create agent instance if it doesn't exist
     if (!agentId || !runId) {
-      const createResponse = await fetch('http://host.docker.internal:6233/api/agents/AgentLocation', {
+      const createResponse = await fetch('https://rev1wm2p.clj5khk.gcp.restack.it/api/agents/AgentLocation', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -27,7 +27,7 @@ export async function POST(request) {
     }
 
     // Send location event to existing agent
-    const eventResponse = await fetch(`http://host.docker.internal:6233/api/agents/AgentLocation/${agentId}/${runId}`, {
+    const eventResponse = await fetch(`https://rev1wm2p.clj5khk.gcp.restack.it/api/agents/AgentLocation/${agentId}/${runId}`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
@@ -47,9 +47,16 @@ export async function POST(request) {
 
     const result = await eventResponse.json();
     console.log('Restack response:', result);
-    return NextResponse.json({
-      numbers: Array.isArray(result) ? result : result.numbers || []
-    });
+    
+    // Properly format the hackathons array
+    const hackathons = Array.isArray(result) ? result.map(event => ({
+      name: event.name || "Local Hackathon",
+      description: event.description || `Event details`,
+      location: event.location || `${data.lat}, ${data.lng}`,
+      date: event.date || "TBA"
+    })) : [];
+    
+    return NextResponse.json({ hackathons });
   } catch (error) {
     console.error('Error processing request:', error);
     

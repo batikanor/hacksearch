@@ -1,6 +1,6 @@
 import localFont from 'next/font/local';
 import './globals.css';
-import Navbar from '../components/Navbar';
+// import Navbar from '../components/Navbar';
 // import Footer from '../components/Footer';
 
 const geistSans = localFont({
@@ -25,47 +25,19 @@ export default function RootLayout({ children }) {
     <html lang="en" className={`${geistSans.variable} ${geistMono.variable}`}>
       <body className="antialiased flex flex-col min-h-screen">
         {/* Header */}
-        <header className="bg-white dark:bg-gray-800 shadow fixed top-0 left-0 right-0 z-50">
-          <Navbar />
-        </header>
-        <div className="flex-1 flex flex-col lg:flex-row mt-[4rem]"> {/* Adjust the top margin */}
-          
-          {/* Left Sidebar */}
-          <aside className="hidden lg:block lg:w-1/5 p-4 bg-gray-100 dark:bg-gray-900 relative">
-            <div
-              className="absolute inset-0 bg-center opacity-20 dark:opacity-10"
-              style={{ 
-                backgroundImage: "url('/aside-pattern.png')",
-                backgroundSize: "150%", // Increase or decrease to rescale
-                backgroundPosition: "center"
-              }}
-            />
-            {/* Add content here */}
-          </aside>
 
+        <div > {/* Adjust the top margin */}
 
           {/* Main Content */}
-          <main className="flex-1 p-6 sm:p-12 bg-white dark:bg-gray-800"
+          {/* <main className="flex-1 p-6 sm:p-12 bg-white dark:bg-gray-800"
                         style={{ 
                           // backgroundImage: "url('/night-sky.png')",
                           // backgroundSize: "150%", // Increase or decrease to rescale
                           // backgroundPosition: "center"
-                        }}>
+                        }}> */}
             {children}
-          </main>
+          {/* </main> */}
 
-          {/* Right Sidebar */}
-          <aside className="hidden lg:block lg:w-1/5 p-4 bg-gray-100 dark:bg-gray-900 relative">
-            <div
-              className="absolute inset-0 bg-center opacity-20 dark:opacity-10"
-              style={{ 
-                backgroundImage: "url('/aside-pattern.png')",
-                backgroundSize: "150%", // Increase or decrease to rescale
-                backgroundPosition: "center"
-              }}
-            />
-            {/* Add content here */}
-          </aside>
 
         </div>
 
