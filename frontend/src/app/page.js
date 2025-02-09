@@ -74,23 +74,44 @@ export default function Home() {
     const key = `${latStr},${lngStr}`;
     setHoveredMarkerKey(key);
 
-    if (labelCache[key]) {
-      setHoveredNumbers(labelCache[key]);
-      return;
-    }
-
+    // Get location name using OpenStreetMap Nominatim API
     try {
-      const response = await fetch('/api/location', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ lat: parseFloat(latStr), lng: parseFloat(lngStr) })
+      const nominatimResponse = await fetch(
+        `https://nominatim.openstreetmap.org/reverse?format=json&lat=${latStr}&lon=${lngStr}&zoom=18&addressdetails=1`,
+        {
+          headers: {
+            'User-Agent': 'YourApp/1.0' // Required by Nominatim ToS
+          }
+        }
+      );
+      const locationData = await nominatimResponse.json();
+      
+      // Get the numbers from cache or fetch them
+      let numbers = labelCache[key];
+      if (!numbers) {
+        const response = await fetch('/api/location', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ lat: parseFloat(latStr), lng: parseFloat(lngStr) })
+        });
+        const data = await response.json();
+        numbers = data.numbers;
+        labelCache[key] = numbers;
+      }
+
+      // Combine location info with numbers
+      setHoveredNumbers({
+        coordinates: `${latStr}°, ${lngStr}°`,
+        location: locationData.display_name,
+        numbers: numbers
       });
-      const data = await response.json();
-      labelCache[key] = data.numbers;
-      setHoveredNumbers(data.numbers);
     } catch (error) {
-      console.error('Error fetching location numbers:', error);
-      setHoveredNumbers(["Error loading numbers"]);
+      console.error('Error fetching location data:', error);
+      setHoveredNumbers({
+        coordinates: `${latStr}°, ${lngStr}°`,
+        location: 'Location name unavailable',
+        numbers: labelCache[key] || ['Error loading numbers']
+      });
     }
   };
 
@@ -127,12 +148,14 @@ export default function Home() {
           onPointHover={handlePointHover}
         />
         {hoveredNumbers && (
-          <div 
-            className="absolute bottom-10 right-10 bg-white text-black p-2 border border-gray-400 rounded max-h-40 overflow-y-auto"
-          >
-            {hoveredNumbers.map((num, idx) => (
-              <div key={idx}>{num}</div>
-            ))}
+          <div className="absolute bottom-10 right-10 bg-white text-black p-4 border border-gray-400 rounded max-w-md max-h-60 overflow-y-auto">
+            <div className="font-bold mb-2">{hoveredNumbers.coordinates}</div>
+            <div className="text-sm text-gray-600 mb-3">{hoveredNumbers.location}</div>
+            <div className="border-t pt-2">
+              {Array.isArray(hoveredNumbers.numbers) && hoveredNumbers.numbers.map((num, idx) => (
+                <div key={idx} className="text-sm">{num}</div>
+              ))}
+            </div>
           </div>
         )}
       </div>
