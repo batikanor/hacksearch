@@ -32,15 +32,17 @@ export default function Home() {
     const lng = clickEvent.lng;
     const newMarker = { lat, lng };
     setMarkers([...markers, newMarker]);
-
+  
     try {
-      const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
-      const response = await fetch(`${apiUrl}/api/location`, {
+      const response = await fetch('/api/location', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ lat, lng }),
       });
       const data = await response.json();
+      // Store the numbers in cache
+      const key = `${lat.toFixed(4)},${lng.toFixed(4)}`;
+      labelCache[key] = data.numbers;
       console.log('Random numbers for location:', data.numbers);
     } catch (error) {
       console.error('Error sending location:', error);
@@ -78,11 +80,11 @@ export default function Home() {
     }
 
     try {
-      const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
-      const response = await fetch(`${apiUrl}/api/location/${latStr}/${lngStr}`);
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
+      const response = await fetch('/api/location', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ lat: parseFloat(latStr), lng: parseFloat(lngStr) })
+      });
       const data = await response.json();
       labelCache[key] = data.numbers;
       setHoveredNumbers(data.numbers);
@@ -137,3 +139,4 @@ export default function Home() {
     </div>
   );
 }
+
