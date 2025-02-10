@@ -4,7 +4,7 @@ const nextConfig = {
     output: process.env.NODE_ENV === 'production' ? 'export' : undefined,
   
     // Set base path only for GitHub Pages, leave empty if using a custom domain
-    basePath: process.env.NODE_ENV === 'production' ? '/nextathon-template' : '',
+    basePath: process.env.NODE_ENV === 'production' ? '/hacksearch' : '',
   
     // Disable server-based image optimization for static export compatibility
     images: {
@@ -12,7 +12,7 @@ const nextConfig = {
     },
   
     // Set assetPrefix for production if assets are hosted separately
-    assetPrefix: process.env.NODE_ENV === 'production' ? 'https://www.yourdomain.com/' : '',
+    assetPrefix: process.env.NODE_ENV === 'production' ? 'https://hacksearch.batikanor.com/' : '',
   
     // Enable trailing slashes in URLs for correct resolution
     trailingSlash: true,
