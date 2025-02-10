@@ -41,18 +41,18 @@ export default function Home() {
 
     document.addEventListener('keydown', handleKeyPress);
 
-    // Fetch initial message
-    async function fetchMessage() {
-      try {
-        const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
-        const response = await fetch(`${apiUrl}/api/hello`);
-        const data = await response.json();
-        setMessage(data.message);
-      } catch (error) {
-        console.error('Error fetching message:', error);
-      }
-    }
-    fetchMessage();
+    // // Fetch initial message
+    // async function fetchMessage() {
+    //   try {
+    //     const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
+    //     const response = await fetch(`${apiUrl}/api/hello`);
+    //     const data = await response.json();
+    //     setMessage(data.message);
+    //   } catch (error) {
+    //     console.error('Error fetching message:', error);
+    //   }
+    // }
+    // fetchMessage();
 
     // Cleanup
     return () => {
