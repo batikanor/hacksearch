@@ -4,8 +4,9 @@ const nextConfig = {
     output: process.env.NODE_ENV === 'production' ? 'export' : undefined,
   
     // Set base path only for GitHub Pages, leave empty if using a custom domain
-    basePath: process.env.NODE_ENV === 'production' ? '/hacksearch' : '',
-  
+    // basePath: process.env.NODE_ENV === 'production' ? '/hacksearch' : '',
+    basePath: process.env.NODE_ENV === 'production' ? "" : "",
+
     // Disable server-based image optimization for static export compatibility
     images: {
       unoptimized: true,
